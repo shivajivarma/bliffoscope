@@ -12,6 +12,6 @@ public interface AnalyzerService {
 
     List<Target> findTargets(String testDataFile, List<String>  targetFiles, int threshold) throws ParseException;
 
-    List<Target> findTargets(MultipartFile testDataMultipartFile, MultipartFile  targetFile, int threshold) throws ParseException;
+    List<Target> findTargets(MultipartFile testDataMultipartFile, MultipartFile[]  targetFile, int threshold) throws ParseException;
 
 }

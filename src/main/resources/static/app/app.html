@@ -1,0 +1,67 @@
+<div class="row">
+    <h2>Bliffo Scope</h2>
+
+    <!-- Input -->
+    <div class="col-md-4">
+        <label class="control-label">Test Data (Eg: TestData.blf)</label>
+        <div class="form-group">
+            <input type="file" id="testDataFile" class="form-control">
+        </div>
+    </div>
+
+    <div class="clear-fix"></div>
+
+    <div class="col-md-4">
+        <label class="control-label">Target (Multiple) (Eg: SlimeTorpedo.blf & Starship.blf)</label>
+        <div class="form-group">
+            <input type="file" id="targetFile" multiple class="form-control">
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <label class="control-label">Threshold</label>
+        <rzslider
+                rz-slider-model="vm.threshold"
+                rz-slider-options="{floor: 0,ceil: 100}"></rzslider>
+    </div>
+
+
+    <div class="col-md-12">
+        <button class="btn btn-primary" ng-click="vm.findResult()">Analyze</button>
+    </div>
+
+    <div class="col-md-12" ng-if="vm.error">
+        <br>
+        <div class="alert alert-danger" role="alert" ng-bind="vm.error"></div>
+    </div>
+
+    <!-- Output -->
+    <div class="col-md-12" ng-if="vm.result">
+        <h3>Result</h3>
+        <p>Following are the matches found in test data against target.</p>
+        <table class="table table-stripped">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Coordinates</th>
+                    <th>Percentage match</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="!vm.result.length"><td>No targets found</td></tr>
+                <tr ng-repeat="target in vm.result">
+                    <td ng-bind="target.type"></td>
+                    <td><span  ng-bind="target.coordinates.x"></span> , <span ng-bind="target.coordinates.y"></span></td>
+                    <td ng-bind="target.percentageMatch"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-12">
+        <hr>
+        <h4>Notes :</h4>
+        <p><b>Threshold : </b> Minimum percentage match required to consider a subset of test data as target.</p>
+        <p><b>Coordinates : </b> target matrix first cell position.</p>
+    </div>
+</div>

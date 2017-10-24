@@ -18,8 +18,8 @@ public class AnalyzerController {
 
     @RequestMapping(value = "/findTargets", method = RequestMethod.POST)
     @ResponseBody
-    public List<Target> findTargets(@RequestParam("testDataFile") MultipartFile testDataFile, @RequestParam("targetFile") MultipartFile targetFile, @RequestParam(value = "threshold", required = false, defaultValue = "70") Integer threshold) {
-       return analyzerService.findTargets(testDataFile, targetFile, threshold);
+    public List<Target> findTargets(@RequestParam("testDataFile") MultipartFile testDataFile, @RequestParam("targetFiles") MultipartFile[] targetFiles, @RequestParam(value = "threshold", required = false, defaultValue = "70") Integer threshold) {
+       return analyzerService.findTargets(testDataFile, targetFiles, threshold);
     }
 
 }

@@ -1,8 +1,6 @@
 package com.shivajivarma.servicenow;
 
 import com.shivajivarma.servicenow.analyzer.service.AnalyzerService;
-import com.shivajivarma.servicenow.analyzer.utils.Utility;
-import com.shivajivarma.servicenow.bliffoscope.model.Image;
 import com.shivajivarma.servicenow.bliffoscope.model.Target;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

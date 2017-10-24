@@ -1,6 +1,6 @@
 package com.shivajivarma.servicenow.analyzer.utils;
 
-import com.shivajivarma.servicenow.analyzer.Constants;
+import com.shivajivarma.servicenow.analyzer.AnalyzerConstants;
 import com.shivajivarma.servicenow.analyzer.exception.ParseException;
 import com.shivajivarma.servicenow.bliffoscope.model.Image;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Utility {
+public class AnalyzerUtility {
 
     /*
      * Reads the file from resources folder and converts it into Image object.
@@ -23,9 +23,9 @@ public class Utility {
      * 3. Computes width of image (Max line width)
      */
     public static Image parseImage(String filePath) throws ParseException {
-        Image image = null;
+        Image image;
         if (filePath != null) {
-            URL relativePath = Utility.class.getClassLoader().getResource(filePath);
+            URL relativePath = AnalyzerUtility.class.getClassLoader().getResource(filePath);
             if (relativePath != null) {
                 File file = new File(relativePath.getFile());
                 image = parseImage(file);
@@ -33,13 +33,13 @@ public class Utility {
                 throw new ParseException(2, "File not found - " + filePath);
             }
         } else {
-            throw new ParseException(1, Constants.INVALID_FILE_PATH);
+            throw new ParseException(1, AnalyzerConstants.INVALID_FILE_PATH);
         }
         return image;
     }
 
     public static Image parseImage(File file) throws ParseException {
-        Image image = null;
+        Image image;
         try {
             Scanner sc = new Scanner(file);
             image = new Image();
@@ -51,6 +51,9 @@ public class Utility {
                 }
                 image.setHeight(image.getHeight() + 1);
                 image.getMatrix().add(convertStringToBooleanArray(line));
+            }
+            if(image.getMatrix().size() == 0){
+                throw new ParseException(3, "Invalid file uploaded");
             }
             sc.close();
         } catch (FileNotFoundException e) {
@@ -81,7 +84,7 @@ public class Utility {
      * Writes multipart file content to file and return the file pointer.
      */
     public static File saveMultipartFile(MultipartFile multipartFile) throws IOException {
-        File file = new File(new Date().getTime() + multipartFile.getOriginalFilename());
+        File file = new File(new Date().getTime() + multipartFile.getOriginalFilename()); //Adding time stamp to file name in order to avoid collision with parallel requests.
         file.createNewFile();
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(multipartFile.getBytes());

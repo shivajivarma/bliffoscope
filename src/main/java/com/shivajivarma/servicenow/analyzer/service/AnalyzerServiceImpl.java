@@ -1,7 +1,8 @@
 package com.shivajivarma.servicenow.analyzer.service;
 
+import com.shivajivarma.servicenow.analyzer.AnalyzerConstants;
 import com.shivajivarma.servicenow.analyzer.exception.ParseException;
-import com.shivajivarma.servicenow.analyzer.utils.Utility;
+import com.shivajivarma.servicenow.analyzer.utils.AnalyzerUtility;
 import com.shivajivarma.servicenow.bliffoscope.model.Image;
 import com.shivajivarma.servicenow.bliffoscope.model.Target;
 import com.shivajivarma.servicenow.bliffoscope.service.BliffoScope;
@@ -24,13 +25,13 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 
     @Override
     public List<Target> findTargets(String testDataFile, List<String> targetFiles, int threshold) throws ParseException {
-        Image testData = Utility.parseImage(testDataFile);
+        Image testData = AnalyzerUtility.parseImage(testDataFile);
         testData.setName(testDataFile);
         System.out.println(testData);
 
-        List<Image> targetImages = new ArrayList<Image>();
+        List<Image> targetImages = new ArrayList<>();
         for (String targetFile : targetFiles) {
-            Image targetImage = Utility.parseImage(targetFile);
+            Image targetImage = AnalyzerUtility.parseImage(targetFile);
             targetImage.setName(targetFile);
             System.out.println(targetImage);
             targetImages.add(targetImage);
@@ -39,25 +40,27 @@ public class AnalyzerServiceImpl implements AnalyzerService {
         return bliffoScope.findTargets(testData, targetImages, threshold);
     }
 
-    public List<Target> findTargets(MultipartFile testDataMultipartFile, MultipartFile targetMultipartFile, int threshold) throws ParseException {
+    public List<Target> findTargets(MultipartFile testDataMultipartFile, MultipartFile[] targetMultipartFiles, int threshold) throws ParseException {
         try {
-            File testDataFile = Utility.saveMultipartFile(testDataMultipartFile);
-            Image testData = Utility.parseImage(testDataFile);
+            File testDataFile = AnalyzerUtility.saveMultipartFile(testDataMultipartFile);
+            Image testData = AnalyzerUtility.parseImage(testDataFile);
             testData.setName(testDataMultipartFile.getOriginalFilename());
             System.out.println(testData);
             testDataFile.delete();
 
-            List<Image> targetImages = new ArrayList<Image>();
-            File targetFile = Utility.saveMultipartFile(targetMultipartFile);
-            Image targetImage = Utility.parseImage(targetFile);
-            targetImage.setName(targetMultipartFile.getOriginalFilename());
-            System.out.println(targetImage);
-            targetImages.add(targetImage);
-            targetFile.delete();
+            ArrayList<Image> targetImages = new ArrayList<>();
+            for(MultipartFile targetMultipartFile: targetMultipartFiles) {
+                File targetFile = AnalyzerUtility.saveMultipartFile(targetMultipartFile);
+                Image targetImage = AnalyzerUtility.parseImage(targetFile);
+                targetImage.setName(targetMultipartFile.getOriginalFilename());
+                System.out.println(targetImage);
+                targetImages.add(targetImage);
+                targetFile.delete();
+            }
 
             return bliffoScope.findTargets(testData, targetImages, threshold);
         } catch (IOException e) {
-            throw new ParseException(5, "Conversion failed - MultipartFile file to File");
+            throw new ParseException(5, AnalyzerConstants.CONVERSION_FAILED);
         }
     }
 
