@@ -53,6 +53,7 @@ public class AnalyzerUtility {
                 image.getMatrix().add(convertStringToBooleanArray(line));
             }
             if(image.getMatrix().size() == 0){
+                file.delete();
                 throw new ParseException(3, "Invalid file uploaded");
             }
             sc.close();
