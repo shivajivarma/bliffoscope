@@ -31,6 +31,8 @@ public class BliffoscopeApplication implements CommandLineRunner {
             for (Target target: targetList){
                 System.out.println(target);
             }
+
+            System.out.println("\n\n Please open http://localhost:8090 \n\n");
         } catch (Exception e){
             System.out.println("EXCEPTION CAUGHT ---->");
 			System.out.println("MESSAGE :: " + e.getMessage());
