@@ -16,12 +16,6 @@ import java.util.Scanner;
 
 public class AnalyzerUtility {
 
-    /*
-     * Reads the file from resources folder and converts it into Image object.
-     * 1. Fills boolean matrix
-     * 2. Compute height of image (Height equals number of lines read from the file)
-     * 3. Computes width of image (Max line width)
-     */
     public static Image parseImage(String filePath) throws ParseException {
         Image image;
         if (filePath != null) {
@@ -38,6 +32,12 @@ public class AnalyzerUtility {
         return image;
     }
 
+    /*
+    * Reads the file from resources folder and converts it into Image object.
+    * 1. Fills boolean matrix
+    * 2. Compute height of image (Height equals number of lines read from the file)
+    * 3. Computes width of image (Max line width)
+    */
     public static Image parseImage(File file) throws ParseException {
         Image image;
         try {

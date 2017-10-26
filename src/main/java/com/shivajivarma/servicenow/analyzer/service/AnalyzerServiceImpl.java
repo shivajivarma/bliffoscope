@@ -23,6 +23,9 @@ public class AnalyzerServiceImpl implements AnalyzerService {
     private BliffoScope bliffoScope;
 
 
+    /*
+     * Convert files to Image objects and pass them bliffoscope service to analyze targets.
+     */
     @Override
     public List<Target> findTargets(String testDataFile, List<String> targetFiles, int threshold) throws ParseException {
         Image testData = AnalyzerUtility.parseImage(testDataFile);
@@ -40,6 +43,9 @@ public class AnalyzerServiceImpl implements AnalyzerService {
         return bliffoScope.findTargets(testData, targetImages, threshold);
     }
 
+    /*
+     * Convert MultipartFile to Image objects and pass them bliffoscope service to analyze targets.
+     */
     public List<Target> findTargets(MultipartFile testDataMultipartFile, MultipartFile[] targetMultipartFiles, int threshold) throws ParseException {
         try {
             File testDataFile = AnalyzerUtility.saveMultipartFile(testDataMultipartFile);
